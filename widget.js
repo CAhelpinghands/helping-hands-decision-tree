@@ -363,6 +363,15 @@ async function submitForm(){
     const data=await res.json();
     loadingEl.classList.remove('show');
     if(data.success){
+      // GA4 conversion event: fires only on confirmed completion
+      if(typeof gtag==='function'){
+        gtag('event','decision_tree_complete',{
+          event_category:'engagement',
+          event_label:'decision_tree',
+          tier:tierName,
+          county:answers.county
+        });
+      }
       $('#hh-final-name').textContent=answers.firstName;
       showStep(10);
       launchConfetti();
